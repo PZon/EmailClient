@@ -1,4 +1,4 @@
-package emailClient.view;
+package emailClient.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
