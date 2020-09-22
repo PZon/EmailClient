@@ -7,8 +7,8 @@ import emailClient.view.ViewFactory;
  * Created by PZON_SM on 17.09.2020.
  **/
 public abstract class BaseController {
-    private EmailManager emailManager;
-    private ViewFactory viewFactory;
+    protected EmailManager emailManager;
+    protected ViewFactory viewFactory;
     private String fxmlFileName;
 
     public BaseController(EmailManager emailManager, ViewFactory viewFactory, String fxmlFileName) {
@@ -17,4 +17,7 @@ public abstract class BaseController {
         this.fxmlFileName = fxmlFileName;
     }
 
+    public String getFxmlFileName(){
+        return fxmlFileName;
+    }
 }
