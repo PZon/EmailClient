@@ -27,6 +27,6 @@ public class MainWindowController extends BaseController {
 
     @FXML
     void menuOptionAction() {
-
+        viewFactory.showOptionsWindow();
     }
 }
