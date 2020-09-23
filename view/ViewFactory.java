@@ -10,7 +10,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.xml.stream.events.StartElement;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by PZON_SM on 17.09.2020.
@@ -19,9 +21,12 @@ public class ViewFactory {
     private EmailManager emailManager;
     private ColorTheme colorTheme = ColorTheme.DEFAULT;
     private FontSize fontSize = FontSize.MEDIUM;
+    private ArrayList<Stage> activeStages;
 
     public ViewFactory(EmailManager emailManager) {
+
         this.emailManager = emailManager;
+        activeStages = new ArrayList<Stage>();
     }
 
     public void showLoginWindow(){
@@ -57,10 +62,12 @@ public class ViewFactory {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
+        activeStages.add(stage);
     }
 
     public void closeStage(Stage stage){
         stage.close();
+        activeStages.remove(stage);
     }
 
     public ColorTheme getColorTheme() {
@@ -77,5 +84,14 @@ public class ViewFactory {
 
     public void setFontSize(FontSize fontSize) {
         this.fontSize = fontSize;
+    }
+
+    public void updateStyle() {
+        for(Stage stage:activeStages){
+            Scene scene = stage.getScene();
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource(ColorTheme.getThemePath(colorTheme)).toExternalForm());
+            scene.getStylesheets().add(getClass().getResource(FontSize.getFontPath(fontSize)).toExternalForm());
+        }
     }
 }
