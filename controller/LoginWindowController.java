@@ -5,16 +5,20 @@ import emailClient.controller.services.LoginService;
 import emailClient.model.EmailAccount;
 import emailClient.view.ViewFactory;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 /**
  * Created by PZON_SM on 17.09.2020.
  **/
-public class LoginWindowController extends BaseController {
+public class LoginWindowController extends BaseController implements Initializable {
 
 
     @FXML
@@ -49,6 +53,14 @@ public class LoginWindowController extends BaseController {
                         Stage stage =(Stage) errorMessage.getScene().getWindow();
                         viewFactory.closeStage(stage);
                         return;
+                    case FAILED_BY_CREDENTIALS:
+                        System.out.println("invalid credentials");
+                        return;
+                    case FAILED_BY_UNEXPECTED_ERROR:
+                        System.out.println("unexpected error");
+                        return;
+                    default:
+                        return;
                 }
             });
         }
@@ -65,5 +77,11 @@ public class LoginWindowController extends BaseController {
         }else{
             return true;
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        emailInput.setText("pzon.temp@gmail.com");
+        passwordInput.setText("orbitek1");
     }
 }
