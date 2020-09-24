@@ -56,6 +56,6 @@ public class LoginService extends Service<EmailLoginResult> {
             protected EmailLoginResult call() throws Exception {
                 return login();
             }
-        }
+        };
     }
 }
