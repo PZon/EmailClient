@@ -9,7 +9,7 @@ public enum FontSize {
     public static String getFontPath(FontSize fontSize){
         switch (fontSize){
             case SMALL:
-                return "style/Css/FontSmall.css";
+                return "styleCss/FontSmall.css";
             case MEDIUM:
                 return "styleCss/FontMedium.css";
             case LARGE:

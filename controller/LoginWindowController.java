@@ -1,6 +1,8 @@
 package emailClient.controller;
 
 import emailClient.EmailManager;
+import emailClient.controller.services.LoginService;
+import emailClient.model.EmailAccount;
 import emailClient.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -33,9 +35,35 @@ public class LoginWindowController extends BaseController {
 
     @FXML
     void loginButtonAction() {
-        System.out.println("Login window button submitted");
-        viewFactory.showMainWindow();
-        Stage stage =(Stage) errorMessage.getScene().getWindow();
-        viewFactory.closeStage(stage);
+        if(fieldsAreValid()){
+            EmailAccount emailAccount = new EmailAccount(emailInput.getText(), passwordInput.getText());
+            LoginService loginService = new LoginService(emailManager, emailAccount);
+            loginService.start();
+            loginService.setOnSucceeded(event ->{
+                EmailLoginResult emailLoginResult = loginService.getValue();
+
+                switch (emailLoginResult){
+                    case SUCCESS:
+                        System.out.println("login ok: "+emailAccount);
+                        viewFactory.showMainWindow();
+                        Stage stage =(Stage) errorMessage.getScene().getWindow();
+                        viewFactory.closeStage(stage);
+                        return;
+                }
+            });
+        }
+
+    }
+
+    private boolean fieldsAreValid() {
+        if(emailInput.getText().isEmpty()){
+            errorMessage.setText("Please fill login");
+            return  false;
+        }else if(passwordInput.getText().isEmpty()){
+            errorMessage.setText("please fill password");
+            return false;
+        }else{
+            return true;
+        }
     }
 }
