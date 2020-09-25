@@ -49,7 +49,10 @@ public class LoginWindowController extends BaseController implements Initializab
                 switch (emailLoginResult){
                     case SUCCESS:
                         System.out.println("login ok: "+emailAccount);
-                        viewFactory.showMainWindow();
+                        if(!viewFactory.isMainWindowActive()){
+                            viewFactory.showMainWindow();
+                        }
+
                         Stage stage =(Stage) errorMessage.getScene().getWindow();
                         viewFactory.closeStage(stage);
                         return;

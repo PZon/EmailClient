@@ -22,11 +22,17 @@ public class ViewFactory {
     private ColorTheme colorTheme = ColorTheme.DEFAULT;
     private FontSize fontSize = FontSize.MEDIUM;
     private ArrayList<Stage> activeStages;
+    private  boolean mainWindowActive = false;
+
 
     public ViewFactory(EmailManager emailManager) {
 
         this.emailManager = emailManager;
         activeStages = new ArrayList<Stage>();
+    }
+
+    public boolean isMainWindowActive(){
+        return mainWindowActive;
     }
 
     public void showLoginWindow(){
@@ -39,6 +45,7 @@ public class ViewFactory {
         System.out.println("MainWindow method has been called");
         BaseController baseController = new MainWindowController(emailManager,this,"MainWindow.fxml");
         initializeStage(baseController);
+        mainWindowActive = true;
     }
 
     public void showOptionsWindow(){
