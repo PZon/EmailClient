@@ -4,7 +4,9 @@ package emailClient.controller;
  * Created by PZON_SM on 17.09.2020.
  **/
 import emailClient.EmailManager;
+import emailClient.controller.services.MessageRendererService;
 import emailClient.model.EmailMessage;
+import emailClient.model.EmailSize;
 import emailClient.model.EmailTreeItem;
 import emailClient.view.ViewFactory;
 import javafx.fxml.FXML;
@@ -42,11 +44,12 @@ public class MainWindowController extends BaseController implements Initializabl
     private TableColumn<EmailMessage, Date> dateCol;
 
     @FXML
-    private TableColumn<EmailMessage, Integer> sizeCol;
-
+    private TableColumn<EmailMessage, EmailSize> sizeCol;
 
     @FXML
     private WebView emailWebView;
+
+    private MessageRendererService messageRendererService;
 
     public MainWindowController(EmailManager emailManager, ViewFactory viewFactory, String fxmlFileName) {
         super(emailManager, viewFactory, fxmlFileName);
@@ -62,12 +65,30 @@ public class MainWindowController extends BaseController implements Initializabl
         viewFactory.showLoginWindow();
     }
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpEmailTreeView();
         setUpEmailTableView();
         setUpFolderSelection();
         setUpBoldFont();
+        setUpMessageRenderService();
+        setUpMessageSelection();
+    }
+
+    private void setUpMessageSelection() {
+        emailTableView.setOnMouseClicked(e->{
+            EmailMessage emailMessage = emailTableView.getSelectionModel().getSelectedItem();
+            if(emailMessage!=null){
+                messageRendererService.setEmailMessage(emailMessage);
+                messageRendererService.restart();
+            }
+        });
+    }
+
+    private void setUpMessageRenderService() {
+        messageRendererService = new MessageRendererService(emailWebView.getEngine());
     }
 
     private void setUpBoldFont() {
@@ -105,7 +126,7 @@ public class MainWindowController extends BaseController implements Initializabl
         subjectCol.setCellValueFactory(new PropertyValueFactory<EmailMessage,String>("Subject"));
         recipientCol.setCellValueFactory(new PropertyValueFactory<EmailMessage,String>("Recipient"));
         dateCol.setCellValueFactory(new PropertyValueFactory<EmailMessage,Date>("Date"));
-        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessage,Integer>("Size"));
+        sizeCol.setCellValueFactory(new PropertyValueFactory<EmailMessage,EmailSize>("Size"));
     }
 
     private void setUpEmailTreeView() {
