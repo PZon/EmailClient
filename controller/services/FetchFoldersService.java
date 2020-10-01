@@ -50,8 +50,8 @@ public class FetchFoldersService extends Service<Void> {
         }
     }
 
-    private void fetchMessagesToFolders(Folder folder, EmailTreeItem<String> emailTreeItem) {
-        Service fetchMessegesService = new Service() {
+  /*  private void fetchMessagesToFolders(Folder folder, EmailTreeItem<String> emailTreeItem) {
+        Service fetchMessagesService = new Service() {
             @Override
             protected Task createTask() {
                 return new Task() {
@@ -61,7 +61,9 @@ public class FetchFoldersService extends Service<Void> {
                             folder.open(Folder.READ_WRITE);
                             int folderSize = folder.getMessageCount();
                             for(int i=folderSize; i>0; i--){
-                                System.out.println(folder.getMessage(i).getSubject());
+                               // System.out.println(folder.getMessage(i).getSubject());
+                                emailTreeItem.addEmail(folder.getMessage(i));
+
                             }
                         }
                         return null;
@@ -69,6 +71,29 @@ public class FetchFoldersService extends Service<Void> {
                 };
             }
         };
-        fetchMessegesService.start();
+        fetchMessagesService.start();
+    }*/
+
+    private void fetchMessagesToFolders(Folder folder, EmailTreeItem<String> emailTreeItem) {
+        Service fetchMessagesService = new Service() {
+            @Override
+            protected Task createTask() {
+                return new Task() {
+                    @Override
+                    protected Object call() throws Exception {
+                        if(folder.getType() != Folder.HOLDS_FOLDERS){
+                            folder.open(Folder.READ_WRITE);
+                            int folderSize = folder.getMessageCount();
+                            for(int i = folderSize; i > 0; i--){
+                                System.out.println(folder.getMessage(i).getSubject());
+                                emailTreeItem.addEmail(folder.getMessage(i));
+                            }
+                        }
+                        return null;
+                    }
+                };
+            }
+        };
+        fetchMessagesService.start();
     }
 }
