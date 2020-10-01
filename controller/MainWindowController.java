@@ -10,10 +10,12 @@ import emailClient.view.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.Date;
@@ -62,10 +64,31 @@ public class MainWindowController extends BaseController implements Initializabl
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         setUpEmailTreeView();
         setUpEmailTableView();
         setUpFolderSelection();
+        setUpBoldFont();
+    }
+
+    private void setUpBoldFont() {
+        emailTableView.setRowFactory(new Callback<TableView<EmailMessage>, TableRow<EmailMessage>>() {
+            @Override
+            public TableRow<EmailMessage> call(TableView<EmailMessage> emailMessageTableView) {
+                return new TableRow<EmailMessage>(){
+                    @Override
+                    protected void updateItem(EmailMessage emailMessage, boolean b) {
+                        super.updateItem(emailMessage, b);
+                        if(emailMessage != null){
+                            if(emailMessage.isRead()){
+                                setStyle("");
+                            }else{
+                                setStyle("-fx-font-weight: bold");
+                            }
+                        }
+                    }
+                };
+            }
+        });
     }
 
     private void setUpFolderSelection() {
