@@ -49,6 +49,7 @@ public class MainWindowController extends BaseController implements Initializabl
     @FXML
     private WebView emailWebView;
 
+
     private MessageRendererService messageRendererService;
 
     public MainWindowController(EmailManager emailManager, ViewFactory viewFactory, String fxmlFileName) {
@@ -65,6 +66,10 @@ public class MainWindowController extends BaseController implements Initializabl
         viewFactory.showLoginWindow();
     }
 
+    @FXML
+    void newMessageActon() {
+        viewFactory.showComposeMessageWindow();
+    }
 
 
     @Override
@@ -150,4 +155,6 @@ public class MainWindowController extends BaseController implements Initializabl
         emailTreeView.setRoot(emailManager.getFolderRoot());
         emailTreeView.setShowRoot(false);
     }
+
+
 }
