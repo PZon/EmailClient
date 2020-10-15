@@ -1,5 +1,6 @@
 package emailClient.model;
 
+import javax.mail.Session;
 import javax.mail.Store;
 import java.util.Properties;
 
@@ -11,6 +12,8 @@ public class EmailAccount {
     private String password;
     private Properties properties;
     private Store store;
+    private Session session;
+
 
     public EmailAccount(String emailAddress, String password) {
         this.emailAddress = emailAddress;
@@ -24,10 +27,22 @@ public class EmailAccount {
         properties.put("mail.smtps.host", "smtp.gmail.com");
         properties.put("mail.smtps.auth", "true");
         properties.put("outgoingHost", "smtp.gmail.com");
+    }
 
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    @Override
+    public String toString() {
         return emailAddress;
     }
 
