@@ -5,6 +5,7 @@ import emailClient.controller.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import javax.xml.stream.events.StartElement;
@@ -70,6 +71,8 @@ public class ViewFactory {
 
         Scene scene= new Scene(parent);
         Stage stage = new Stage();
+       // stage.getIcons().add(new Image("img/phiSmall.png"));
+        stage.setTitle("emailManager by PZON");
         stage.setScene(scene);
         stage.show();
         activeStages.add(stage);
