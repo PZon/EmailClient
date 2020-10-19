@@ -71,7 +71,7 @@ public class ViewFactory {
 
         Scene scene= new Scene(parent);
         Stage stage = new Stage();
-       // stage.getIcons().add(new Image("img/phiSmall.png"));
+        //stage.getIcons().add(new Image("img/phiSmall.png"));
         stage.setTitle("emailManager by PZON");
         stage.setScene(scene);
         stage.show();
