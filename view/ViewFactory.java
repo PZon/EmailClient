@@ -34,26 +34,22 @@ public class ViewFactory {
     }
 
     public void showLoginWindow(){
-        System.out.println("LoginWindow method has been called");
         BaseController controller = new LoginWindowController(emailManager, this, "LoginWindow.fxml");
         initializeStage(controller);
     }
 
     public void showMainWindow(){
-        System.out.println("MainWindow method has been called");
         BaseController baseController = new MainWindowController(emailManager,this,"MainWindow.fxml");
         initializeStage(baseController);
         mainWindowActive = true;
     }
 
     public void showOptionsWindow(){
-        System.out.println("Options method window has been called");
         BaseController baseController = new OptionsWindowController(emailManager, this, "OptionsWindow.fxml");
         initializeStage(baseController);
     }
 
     public void showComposeMessageWindow(){
-        System.out.println("Options method window has been called");
         BaseController baseController = new ComposeMessageController(emailManager, this, "ComposeMessageWindow.fxml");
         initializeStage(baseController);
     }
@@ -70,8 +66,9 @@ public class ViewFactory {
         }
 
         Scene scene= new Scene(parent);
+        updateStyle(scene);
         Stage stage = new Stage();
-        //stage.getIcons().add(new Image("img/phiSmall.png"));
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("img/phiSmall.png")));
         stage.setTitle("emailManager by PZON");
         stage.setScene(scene);
         stage.show();
@@ -99,12 +96,16 @@ public class ViewFactory {
         this.fontSize = fontSize;
     }
 
-    public void updateStyle() {
+    public void updateAllStyle() {
         for(Stage stage:activeStages){
             Scene scene = stage.getScene();
-            scene.getStylesheets().clear();
-            scene.getStylesheets().add(getClass().getResource(ColorTheme.getThemePath(colorTheme)).toExternalForm());
-            scene.getStylesheets().add(getClass().getResource(FontSize.getFontPath(fontSize)).toExternalForm());
+            updateStyle(scene);
         }
+    }
+
+    private void updateStyle(Scene scene) {
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add(getClass().getResource(ColorTheme.getThemePath(colorTheme)).toExternalForm());
+        scene.getStylesheets().add(getClass().getResource(FontSize.getFontPath(fontSize)).toExternalForm());
     }
 }
