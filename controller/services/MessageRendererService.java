@@ -9,6 +9,7 @@ import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
 import java.io.IOException;
 
 /**
@@ -43,12 +44,22 @@ public class MessageRendererService extends Service {
             stringBuffer.append(message.getContent().toString());
         } else if (isMultipartType(contentType)) {
             Multipart multipart = (Multipart) message.getContent();
-            for(int i=multipart.getCount()-1; i>=0; i--){
-                BodyPart bodyPart = multipart.getBodyPart(i);
-                String bodyPartContentType = bodyPart.getContentType();
-                if(isSimpleType(bodyPartContentType)){
-                    stringBuffer.append(bodyPart.getContent().toString());
-                }
+            loadMultipart(multipart, stringBuffer);
+        }
+    }
+
+    private void loadMultipart(Multipart multipart, StringBuffer stringBuffer) throws MessagingException, IOException{
+        for(int i=multipart.getCount()-1; i>=0; i--){
+            BodyPart bodyPart = multipart.getBodyPart(i);
+            String bodyPartContentType = bodyPart.getContentType();
+            if(isSimpleType(bodyPartContentType)){
+                stringBuffer.append(bodyPart.getContent().toString());
+            }else if(isMultipartType(bodyPartContentType)){
+                Multipart multipart2 = (Multipart) bodyPart.getContent();
+                loadMultipart(multipart2,stringBuffer);
+            }else if(!isTxtPlain(bodyPartContentType)){
+                MimeBodyPart mimeBodyPart = (MimeBodyPart) bodyPart;
+                emailMessage.addAttachment(mimeBodyPart);
             }
         }
     }
@@ -56,6 +67,10 @@ public class MessageRendererService extends Service {
     private boolean isMultipartType(String contentType) {
         if(contentType.contains("multipart")) return true;
         else return false;
+    }
+
+    private boolean isTxtPlain(String contentType){
+        return contentType.contains("TEXT/PLAIN");
     }
 
     private boolean isSimpleType(String contentType) {
