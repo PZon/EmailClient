@@ -18,5 +18,6 @@
       <HTMLEditor fx:id="txtAreaField" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="18.0" layoutY="197.0" prefHeight="368.0" prefWidth="583.0" />
       <Label layoutX="16.0" layoutY="40.0" text="Account" />
       <ChoiceBox fx:id="emailAccChoice" layoutX="79.0" layoutY="36.0" prefHeight="26.0" prefWidth="450.0" />
+      <Button layoutX="413.0" layoutY="153.0" mnemonicParsing="false" onAction="#attachBtnAction" text="Attach" />
    </children>
 </AnchorPane>
